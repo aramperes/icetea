@@ -1,6 +1,6 @@
 {
   "name": "icetea",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "issue system",
   "main": "./dist/start.js",
   "scripts": {
