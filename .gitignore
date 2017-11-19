@@ -1,4 +1,5 @@
 node_modules/
 *.lock
-dist/
-!dist/default-config.json
+dist/**
+!dist/**/*.npmignore
+*.tgz

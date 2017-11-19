@@ -1,6 +1,2 @@
-./dist/config.json
-**.tsx
 package-lock.json
-tsconfig.json
-webpack.config.json
-*.sh
+*.tgz
