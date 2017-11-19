@@ -4,7 +4,8 @@
   "description": "issue system",
   "main": "./dist/start.js",
   "scripts": {
-    "compileAndRun": "sh compileAndRun.sh"
+    "compileAndRun": "sh compileAndRun.sh",
+    "cleanDist": "sh cleanDist.sh"
   },
   "repository": {
     "type": "git",
