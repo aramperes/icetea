@@ -1,4 +1,4 @@
-import { ConfigurationLoader } from "./configuration";
+import { ConfigurationLoader } from "./util/configuration";
 
 console.log("Welcome to Ice Tea.");
 console.log("Loading configuration...");

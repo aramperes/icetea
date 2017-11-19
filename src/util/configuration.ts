@@ -13,7 +13,7 @@ export class ConfigurationLoader {
   }
 
   loadConfiguration(): IConfiguration {
-    var config_path = path.join(__dirname, this.config_file_name);
+    var config_path = path.join(__dirname, "..", this.config_file_name);
     if (!fs.existsSync(config_path)) {
       console.error("Could not find 'config.json' file in root directory.");
       console.error("Make sure you rename 'default-config.json' to 'config.json' before using Ice Tea.");
