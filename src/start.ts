@@ -1,5 +1,6 @@
 import { ConfigurationLoader } from "./util/configuration";
-import WebServer from "./server/webserver";
+import WebServer, { Router } from "./server/webserver";
+import TestRouter from "./server/routers/TestRouter";
 
 console.log("Welcome to Ice Tea.");
 console.log("Loading configuration...");
@@ -9,8 +10,4 @@ console.log("port: " + config.port);
 
 console.log("Starting server");
 
-function mainRoute(req, res) {
-  res.send("Hello there: " + req.params.something);
-}
-
-var web = new WebServer(config).routeGet('/:something', mainRoute).listen();
+var web = new WebServer(config).router(new TestRouter).listen();
