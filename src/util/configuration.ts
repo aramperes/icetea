@@ -3,6 +3,12 @@ import * as path from "path";
 
 export interface IConfiguration {
   port: number;
+  database: IDatabaseConfiguration;
+}
+
+export interface IDatabaseConfiguration {
+  host: string;
+  port: number;
 }
 
 export class ConfigurationLoader {
