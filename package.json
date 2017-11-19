@@ -5,7 +5,9 @@
   "main": "./dist/start.js",
   "scripts": {
     "compileAndRun": "sh compileAndRun.sh",
-    "cleanDist": "sh cleanDist.sh"
+    "compile": "sh compile.sh",
+    "cleanDist": "sh cleanDist.sh",
+    "prepublishOnly": "npm run cleanDist && npm run compile"
   },
   "repository": {
     "type": "git",
