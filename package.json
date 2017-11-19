@@ -19,5 +19,8 @@
   "homepage": "https://github.com/icetea-js/icetea#readme",
   "devDependencies": {
     "@types/node": "^8.0.53"
+  },
+  "dependencies": {
+    "express": "^4.16.2"
   }
 }
