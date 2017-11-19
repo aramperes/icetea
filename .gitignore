@@ -3,4 +3,5 @@ node_modules/
 dist/**
 !dist/**/default-config.json
 !dist/**/.npmignore
+!dist/**/index.html
 *.tgz

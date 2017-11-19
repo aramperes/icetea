@@ -1,2 +1,3 @@
 #!/bin/sh
-tsc ./src/**.ts --outDir ./dist && node .
+sh compile.sh
+node .
