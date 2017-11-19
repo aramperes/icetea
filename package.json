@@ -16,7 +16,7 @@
   "bugs": {
     "url": "https://github.com/icetea-js/icetea/issues"
   },
-  "homepage": "https://github.com/icetea-js/icetea#readme",
+  "homepage": "http://www.icetea.io",
   "devDependencies": {
     "@types/node": "^8.0.53"
   },
