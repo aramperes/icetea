@@ -1,0 +1,22 @@
+{
+  "name": "icetea",
+  "version": "0.0.1",
+  "description": "issue system",
+  "main": "./dist/start.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/icetea-js/icetea.git"
+  },
+  "author": "icetea",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/icetea-js/icetea/issues"
+  },
+  "homepage": "https://github.com/icetea-js/icetea#readme",
+  "devDependencies": {
+    "@types/node": "^8.0.53"
+  }
+}
