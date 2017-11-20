@@ -3,12 +3,20 @@ import * as path from "path";
 
 export interface IConfiguration {
   port: number;
-  database: IDatabaseConfiguration;
+  mongodb: IMongoConfiguration;
 }
 
-export interface IDatabaseConfiguration {
+export interface IMongoConfiguration {
   host: string;
   port: number;
+  database: IMongoDatabaseConfiguration;
+}
+
+export interface IMongoDatabaseConfiguration {
+  name: string;
+  auth: boolean;
+  username: string;
+  password: string;
 }
 
 export class ConfigurationLoader {

@@ -2,14 +2,29 @@ import { ConfigurationLoader } from "./util/configuration";
 import WebServer, { Router } from "./server/webserver";
 import IndexRouter from './server/routers/IndexRouter';
 import ApiRouter from "./server/routers/ApiRouter";
+import MongoConnector from "./db/MongoConnector";
 
-console.log("Welcome to Ice Tea.");
-console.log("Loading configuration...");
+console.log("Welcome to Ice Tea");
+console.log("Loading configuration");
 
 var config = new ConfigurationLoader().loadConfiguration();
 console.log("port: " + config.port);
-console.log("database: " + config.database.host + ":" + config.database.port);
+console.log("database: " + config.mongodb.host + ":" + config.mongodb.port + "/" + config.mongodb.database.name + " (auth:" + config.mongodb.database.auth + ")");
 
-console.log("Starting server");
+console.log("Connecting to database...");
 
-var web = new WebServer(__dirname, config).static().router(new ApiRouter).router(new IndexRouter).listen();
+var mongo = new MongoConnector(config.mongodb);
+mongo.connect((err) => {
+  if (err) {
+    throw err;
+  }
+  console.log("Connected to database")
+  startWebServer();
+});
+
+function startWebServer() {
+  console.log("Starting server...");
+  return new WebServer(__dirname, config).static().router(new ApiRouter).router(new IndexRouter).listen(() => {
+    console.log("Open to connections")
+  });
+}

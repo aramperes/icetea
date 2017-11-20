@@ -1,7 +1,13 @@
 {
   "port": 8080,
-  "database": {
+  "mongodb": {
     "host": "localhost",
-    "port": 27017
+    "port": 27017,
+    "database": {
+      "name": "icetea",
+      "auth": false,
+      "username": "admin",
+      "password": "change_auth_option_to_true"
+    }
   }
 }
