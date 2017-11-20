@@ -1,9 +1,9 @@
 import * as React from "react";
 
-export interface IceTeaProps {
+export interface IceTeaContainerProps {
 }
 
-export default class IceTea extends React.Component<IceTeaProps, {}> {
+export default class IceTeaContainer extends React.Component<IceTeaContainerProps, {}> {
   render() {
     return (
       <div>

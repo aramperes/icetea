@@ -1,9 +1,17 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
+import { Router } from "react-router";
+import Routes from "./routes";
+import createBrowserHistory from 'history/createBrowserHistory'
+const history = createBrowserHistory()
 
-import IceTea from "./components/IceTea";
+const router = () => (
+    <Router history={history}>
+        {Routes}
+    </Router>
+);
 
 ReactDOM.render(
-    <IceTea />,
+    router(),
     document.getElementById("app")
 );
