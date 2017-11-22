@@ -5,3 +5,4 @@ dist/**
 !dist/**/.npmignore
 !dist/**/index.html
 *.tgz
+*-debug.log

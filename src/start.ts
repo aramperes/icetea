@@ -16,7 +16,9 @@ console.log("Connecting to database...");
 var mongo = new MongoConnector(config.mongodb);
 mongo.connect((err) => {
   if (err) {
-    throw err;
+    console.error('Failed to connect to MongoDB database: ' + err.message);
+    process.exit(1);
+    return;
   }
   console.log("Connected to database")
   startWebServer();
