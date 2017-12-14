@@ -11,12 +11,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/icetea-js/icetea.git"
+    "url": "git+https://github.com/icetea/icetea.git"
   },
   "author": "icetea",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/icetea-js/icetea/issues"
+    "url": "https://github.com/icetea/icetea/issues"
   },
   "homepage": "http://www.icetea.io",
   "devDependencies": {
