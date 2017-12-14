@@ -2,38 +2,38 @@ import * as fs from "fs";
 import * as path from "path";
 
 export interface IConfiguration {
-  port: number;
-  mongodb: IMongoConfiguration;
+    port: number;
+    mongodb: IMongoConfiguration;
 }
 
 export interface IMongoConfiguration {
-  host: string;
-  port: number;
-  database: IMongoDatabaseConfiguration;
+    host: string;
+    port: number;
+    database: IMongoDatabaseConfiguration;
 }
 
 export interface IMongoDatabaseConfiguration {
-  name: string;
-  auth: boolean;
-  username: string;
-  password: string;
+    name: string;
+    auth: boolean;
+    username: string;
+    password: string;
 }
 
 export class ConfigurationLoader {
-  config_file_name: string;
+    config_file_name: string;
 
-  constructor(config_file_name: string = "config.json") {
-    this.config_file_name = config_file_name;
-  }
-
-  loadConfiguration(): IConfiguration {
-    var config_path = path.join(__dirname, "..", this.config_file_name);
-    if (!fs.existsSync(config_path)) {
-      console.error("Could not find 'config.json' file in the 'dist' directory.");
-      console.error("Make sure you rename 'default-config.json' to 'config.json' before using Ice Tea.");
-      process.exit(1);
+    constructor(config_file_name: string = "config.json") {
+        this.config_file_name = config_file_name;
     }
-    var config = require(config_path);
-    return <IConfiguration> config;
-  }
+
+    loadConfiguration(): IConfiguration {
+        let config_path = path.join(__dirname, "..", this.config_file_name);
+        if (!fs.existsSync(config_path)) {
+            console.error("Could not find 'config.json' file in the 'dist' directory.");
+            console.error("Make sure you rename 'default-config.json' to 'config.json' before using Ice Tea.");
+            process.exit(1);
+        }
+        let config = require(config_path);
+        return <IConfiguration> config;
+    }
 }

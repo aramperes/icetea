@@ -5,11 +5,11 @@ export interface IceTeaContainerProps {
 }
 
 export default class IceTeaContainer extends React.Component<IceTeaContainerProps, {}> {
-  render() {
-    return (
-      <div className="IceTeaContainer-global">
-        <p>Hello from IceTea.</p>
-      </div>
-    );
-  }
+    render() {
+        return (
+            <div className="IceTeaContainer-global">
+                <p>Hello from IceTea.</p>
+            </div>
+        );
+    }
 }
