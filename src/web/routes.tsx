@@ -6,8 +6,8 @@ import Login from "./components/Login"
 
 const Routes = (
     <div>
-        <Route exact path='/' component={IceTeaContainer}/>
-        <Route path='/' component={Home}/>
+        <Route path='/' component={IceTeaContainer}/>
+        <Route exact path='/' component={Home}/>
         <Route path='/login' component={Login}/>
     </div>
 );
