@@ -1,7 +1,7 @@
 import {mongo} from "../../../../start";
 import UserSchema from "../../../../db/schema/UserSchema";
 
-export default class GetUsers {
+export default class ApiUsers {
     private constructor() {
     }
 

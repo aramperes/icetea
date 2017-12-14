@@ -1,20 +1,20 @@
 import {Router} from "../WebServer";
-import GetUsers from "./api/users/GetUsers";
+import ApiUsers from "./api/users/ApiUsers";
 
 export default class ApiRouter extends Router {
     constructor() {
         super('/api');
 
         this.get('/users', (req, res) => {
-            GetUsers.listUsers(req, res);
+            ApiUsers.listUsers(req, res);
         });
 
         this.get('/users/:name', (req, res) => {
-            GetUsers.getUser(req, res);
+            ApiUsers.getUser(req, res);
         });
 
         this.post('/users', (req, res) => {
-            GetUsers.createUser(req, res);
+            ApiUsers.createUser(req, res);
         });
 
         this.get('*', (req, res) => {
