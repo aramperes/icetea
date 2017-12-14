@@ -3,6 +3,7 @@ import {Router as ERouter} from "express";
 import {IConfiguration} from "../util/configuration";
 import * as path from "path";
 import {Server} from "net";
+const bodyParser = require('body-parser');
 
 export default class WebServer {
     public app: any;
@@ -14,6 +15,7 @@ export default class WebServer {
         this._root_path = root_path;
         this._config = config;
         this.app = express();
+        this.app.use(bodyParser.json());
     }
 
     router(router: Router): WebServer {
@@ -61,6 +63,11 @@ export class Router {
 
     get(path: string, handler: (req: any, res: any, next: any) => void): Router {
         this._router.get(path, handler);
+        return this;
+    }
+
+    post(path: string, handler: (req: any, res: any, next: any) => void): Router {
+        this._router.post(path, handler);
         return this;
     }
 

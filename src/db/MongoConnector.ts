@@ -1,6 +1,6 @@
 import {IMongoConfiguration} from "../util/configuration";
 import Schema from "./schema/Schema";
-import {MongoClient, Db, MongoError, InsertOneWriteOpResult} from "mongodb";
+import {Db, InsertOneWriteOpResult, MongoClient, MongoError} from "mongodb";
 
 export default class MongoConnector {
     config: IMongoConfiguration;
@@ -26,6 +26,41 @@ export default class MongoConnector {
                 return;
             }
             collection.insertOne(schema, (err, result) => {
+                callback(err, result);
+            });
+        });
+    }
+
+    getAll<T extends Schema>(schema: T, callback: (err: MongoError, result: Array<T>) => void): void {
+        this._client.collection(schema.schema_name, (err, collection) => {
+            if (err) {
+                callback(err, undefined);
+                return;
+            }
+            collection.find({}).toArray((err, result) => {
+                if (err) {
+                    callback(err, undefined);
+                    return;
+                }
+                for (let i = 0; i < result.length; i++) {
+                    result[i] = schema.read(result[i]);
+                }
+                callback(err, result);
+            });
+        });
+    }
+
+    getOne<T extends Schema>(schema: T, callback: (err: MongoError, result: T) => void): void {
+        this._client.collection(schema.schema_name, (err, collection) => {
+            if (err) {
+                callback(err, undefined);
+                return;
+            }
+            collection.findOne(schema, (err, result) => {
+                if (err) {
+                    callback(err, undefined);
+                    return;
+                }
                 callback(err, result);
             });
         });

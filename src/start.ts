@@ -25,7 +25,7 @@ console.log("database: " + config.mongodb.host + ":" + config.mongodb.port + "/"
 
 console.log("Connecting to database...");
 
-const mongo = new MongoConnector(config.mongodb);
+export const mongo = new MongoConnector(config.mongodb);
 mongo.connect((err) => {
     if (err) {
         console.error('Failed to connect to MongoDB database: ' + err.message);
