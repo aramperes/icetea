@@ -58,7 +58,10 @@ function startWebServer() {
     }, (err) => {
         if (err.code === 'EADDRINUSE') {
             console.error('Failed to start server, port ' + err.port + ' is already in use.');
-            process.exit(1);
+        } else {
+            console.error('An unhandled error occurred while starting the server.');
+            throw err;
         }
+        process.exit(1);
     });
 }
