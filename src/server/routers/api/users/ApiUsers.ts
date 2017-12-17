@@ -83,6 +83,7 @@ export default class ApiUsers {
         if (!req.params.id) {
             // no name parameter
             res.status(400).end();
+            return;
         }
         let id = req.params.id;
         let schema = new UserSchema;
