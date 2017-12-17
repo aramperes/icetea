@@ -19,7 +19,12 @@ export default class MongoConnector {
         });
     }
 
-    insert(schema: Schema, callback: (err: MongoError, result: InsertOneWriteOpResult) => void): void {
+    insertOne(schema: Schema, callback: (err: MongoError, result: InsertOneWriteOpResult) => void): void {
+        for (let key of Object.keys(schema)) {
+            if (schema[key] === undefined || key === "_id") {
+                delete schema[key];
+            }
+        }
         this._client.collection(schema.schema_name, (err, collection) => {
             if (err) {
                 callback(err, undefined);
@@ -51,15 +56,24 @@ export default class MongoConnector {
     }
 
     getOne<T extends Schema>(schema: T, callback: (err: MongoError, result: T) => void): void {
+        let query = {};
+        for (let key of Object.keys(schema)) {
+            if (schema[key] !== undefined) {
+                query[key] = schema[key];
+            }
+        }
         this._client.collection(schema.schema_name, (err, collection) => {
             if (err) {
                 callback(err, undefined);
                 return;
             }
-            collection.findOne(schema, (err, result) => {
+            collection.findOne(query, (err, result) => {
                 if (err) {
                     callback(err, undefined);
                     return;
+                }
+                if (result) {
+                    result = schema.read(result);
                 }
                 callback(err, result);
             });

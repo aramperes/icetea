@@ -1,5 +1,8 @@
+import {ObjectID} from "bson";
+
 export default abstract class Schema {
     schema_name: string;
+    _id: ObjectID;
 
     public toJSON(): object {
         let copy = (<any>Object).assign({}, this);
@@ -12,7 +15,9 @@ export default abstract class Schema {
         copy = (<any>Object).assign(copy, Object.getPrototypeOf(this));
         const properties = Object.getOwnPropertyNames(copy);
         for (let key of Object.keys(o)) {
-            if (properties.indexOf(key) !== -1) {
+            if (key === "_id") {
+                copy["_id"] = o["_id"];
+            } else if (properties.indexOf(key) !== -1) {
                 copy[key] = o[key];
             }
         }

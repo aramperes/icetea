@@ -33,21 +33,6 @@ mongo.connect((err) => {
         return;
     }
     console.log("Connected to database");
-
-    /* user creation demo
-
-        let user = new UserSchema();
-        user.name = "Momo";
-        user.email = "momo@momo.com";
-        user.set_password("abc");
-
-        mongo.insert(user, (err, result) => {
-            if (err) {
-                throw err;
-            }
-        });
-
-    */
     server = startWebServer();
 });
 

@@ -1,5 +1,6 @@
 import {mongo} from "../../../../start";
 import UserSchema from "../../../../db/schema/UserSchema";
+import {ObjectID} from "bson";
 
 export default class ApiUsers {
     private constructor() {
@@ -58,20 +59,20 @@ export default class ApiUsers {
                 return;
             }
             if (user) {
-                result.message = "There is already a user with the name '" + content['name'] + "'.";
-                console.log(user);
+                result.message = "There is already a user with the name '" + content['name'] + "' (" + user._id + ").";
                 res.status(400).json(result);
                 return;
             }
             schema.email = content.email;
             schema.set_password(content.password);
-            mongo.insert(schema, (err) => {
+            mongo.insertOne(schema, (err, mongoResult) => {
                 if (err) {
                     res.status(500).json(err);
                     return;
                 }
                 result.success = true;
                 result.message = "User created successfully.";
+                result['id'] = mongoResult.insertedId.toHexString();
                 res.status(200).json(result);
             });
         });
@@ -79,13 +80,17 @@ export default class ApiUsers {
 
     static getUser(req, res): void {
         // get a user
-        if (!req.params.name) {
+        if (!req.params.id) {
             // no name parameter
             res.status(400).end();
         }
-        let name = req.params.name;
+        let id = req.params.id;
         let schema = new UserSchema;
-        schema.name = name;
+        if (!ObjectID.isValid(id)) {
+            res.status(404).end();
+            return;
+        }
+        schema._id = new ObjectID(id);
         mongo.getOne(schema, (err, result) => {
             if (err) {
                 res.json(err);

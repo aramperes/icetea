@@ -9,7 +9,7 @@ export default class ApiRouter extends Router {
             ApiUsers.listUsers(req, res);
         });
 
-        this.get('/users/:name', (req, res) => {
+        this.get('/users/:id', (req, res) => {
             ApiUsers.getUser(req, res);
         });
 
