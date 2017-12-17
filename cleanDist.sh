@@ -23,4 +23,3 @@ fi
 
 rm -r temp_dist
 mkdir dist/public
-mkdir dist/public/js

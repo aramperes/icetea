@@ -31,14 +31,14 @@ mongo.connect((err) => {
         process.exit(1);
         return;
     }
-    console.log("Connected to database");
+    console.log("Connected to database.");
     server = startWebServer();
 });
 
 function startWebServer() {
     console.log("Starting server...");
     return new WebServer(__dirname, config).static().router(new ApiRouter).router(new IndexRouter).listen(() => {
-        console.log("Open to connections")
+        console.log("Open to connections.")
     }, (err) => {
         if (err.code === 'EADDRINUSE') {
             console.error('Failed to start server, port ' + err.port + ' is already in use.');

@@ -1,4 +1,54 @@
 .IceTeaContainer-global {
-    font-size: 16pt;
     font-family: Arial, sans-serif;
+    width: 100%;
+}
+
+.IceTeaContainer-navbar {
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 45px;
+    background-color: white;
+    box-shadow: 0 1px 3px #AAA;
+    cursor: default;
+}
+
+.IceTeaContainer-navbar-icon {
+    text-align: center;
+    line-height: 45px;
+    display: inline-block;
+    cursor: pointer;
+    margin: 0 7px;
+    font-weight: bold;
+    padding: 0 25px;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-image: url("/public/icon.png");
+    background-size: 40px;
+}
+
+.IceTeaContainer-navbar-icon:hover {
+    background-color: #F0F0F0;
+}
+
+.IceTeaContainer-navbar-item {
+    text-align: center;
+    line-height: 45px;
+    display: inline-block;
+    cursor: pointer;
+    margin: 0 7px;
+    font-weight: bold;
+    color: #222;
+    padding: 0 10px;
+    height: 100%;
+    vertical-align: top;
+}
+
+.IceTeaContainer-navbar-item:hover {
+    color: #e92f60;
+    background-color: #F0F0F0;
+    border-bottom: 2px solid #e92f60;
+    box-sizing: border-box;
 }
