@@ -1,5 +1,6 @@
 const webpack = require("webpack");
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const UglifyJsPlugin = require("uglifyes-webpack-plugin");
 module.exports = {
   entry: "./src/web/index.tsx",
   output: {
@@ -24,6 +25,9 @@ module.exports = {
     new CopyWebpackPlugin([
       { from: 'src/public', to: '.' }
     ]),
+    new UglifyJsPlugin({
+      minimize: true
+    })
   ],
   externals: {
     React: 'react',
