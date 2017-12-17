@@ -14,7 +14,6 @@ let shutdown = function (code = 0) {
 
 process.on('SIGINT', shutdown);
 process.on('SIGTERM', shutdown);
-process.on('SIGKILL', shutdown);
 
 console.log("Welcome to Ice Tea");
 console.log("Loading configuration");
