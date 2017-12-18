@@ -1,6 +1,6 @@
 import * as React from "react";
 import "./IceTeaContainer.css"
-import {Link} from "react-router-dom";
+import {Link, NavLink} from "react-router-dom";
 
 export interface IceTeaContainerProps {
 }
@@ -13,21 +13,21 @@ export default class IceTeaContainer extends React.Component<IceTeaContainerProp
                     <Link to={"/"}>
                         <div className={"IceTeaContainer-navbar-icon"}> </div>
                     </Link>
-                    <Link to={"/"}>
+                    <NavLink to={"/"} activeClassName={"IceTeaContainer-navbar-item-active"} exact={true}>
                         <div className={"IceTeaContainer-navbar-item"}>
                             Home
                         </div>
-                    </Link>
-                    <Link to={"/projects"}>
+                    </NavLink>
+                    <NavLink to={"/projects"} activeClassName={"IceTeaContainer-navbar-item-active"}>
                         <div className={"IceTeaContainer-navbar-item"}>
                             Projects
                         </div>
-                    </Link>
-                    <Link to={"/issues"}>
+                    </NavLink>
+                    <NavLink to={"/issues"} activeClassName={"IceTeaContainer-navbar-item-active"}>
                         <div className={"IceTeaContainer-navbar-item"}>
                             Issues
                         </div>
-                    </Link>
+                    </NavLink>
                 </div>
             </div>
         );

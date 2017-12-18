@@ -46,6 +46,16 @@
     vertical-align: top;
 }
 
+.IceTeaContainer-navbar-item-active div {
+    border-bottom: 2px solid #e92f60;
+    box-sizing: border-box;
+}
+
+.IceTeaContainer-navbar-item-active:hover div {
+    color: #e92f60;
+    background-color: #F0F0F0;
+}
+
 .IceTeaContainer-navbar-item:hover {
     color: #e92f60;
     background-color: #F0F0F0;
