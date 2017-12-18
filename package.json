@@ -18,7 +18,7 @@
   "bugs": {
     "url": "https://github.com/icetea/icetea/issues"
   },
-  "homepage": "http://www.icetea.io",
+  "homepage": "https://www.icetea.io",
   "devDependencies": {
     "@types/node": "^8.0.53",
     "awesome-typescript-loader": "^3.4.0",
