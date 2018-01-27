@@ -6,3 +6,4 @@ dist/**
 !dist/**/index.html
 *.tgz
 *-debug.log
+.idea/

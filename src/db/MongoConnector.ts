@@ -20,9 +20,11 @@ export default class MongoConnector {
     }
 
     insertOne(schema: Schema, callback: (err: MongoError, result: InsertOneWriteOpResult) => void): void {
-        for (let key of Object.keys(schema)) {
-            if (schema[key] === undefined || key === "_id") {
-                delete schema[key];
+        let insertObject = {};
+        schema.write(insertObject);
+        for (let key of Object.keys(insertObject)) {
+            if (insertObject[key] === undefined || key === "_id") {
+                delete insertObject[key];
             }
         }
         this._client.collection(schema.schema_name, (err, collection) => {
@@ -30,13 +32,20 @@ export default class MongoConnector {
                 callback(err, undefined);
                 return;
             }
-            collection.insertOne(schema, (err, result) => {
+            collection.insertOne(insertObject, (err, result) => {
                 callback(err, result);
             });
         });
     }
 
     getAll<T extends Schema>(schema: T, callback: (err: MongoError, result: Array<T>) => void): void {
+        let getObject = {};
+        schema.write(getObject);
+        for (let key of Object.keys(getObject)) {
+            if (getObject[key] === undefined) {
+                delete getObject[key];
+            }
+        }
         this._client.collection(schema.schema_name, (err, collection) => {
             if (err) {
                 callback(err, undefined);
@@ -48,7 +57,9 @@ export default class MongoConnector {
                     return;
                 }
                 for (let i = 0; i < result.length; i++) {
-                    result[i] = schema.read(result[i]);
+                    let rs = schema.createInstance();
+                    rs.read(result[i]);
+                    result[i] = rs;
                 }
                 callback(err, result);
             });
@@ -56,10 +67,11 @@ export default class MongoConnector {
     }
 
     getOne<T extends Schema>(schema: T, callback: (err: MongoError, result: T) => void): void {
-        let query = {};
-        for (let key of Object.keys(schema)) {
-            if (schema[key] !== undefined) {
-                query[key] = schema[key];
+        let getObject = {};
+        schema.write(getObject);
+        for (let key of Object.keys(getObject)) {
+            if (getObject[key] === undefined) {
+                delete getObject[key];
             }
         }
         this._client.collection(schema.schema_name, (err, collection) => {
@@ -67,13 +79,15 @@ export default class MongoConnector {
                 callback(err, undefined);
                 return;
             }
-            collection.findOne(query, (err, result) => {
+            collection.findOne(getObject, (err, result) => {
                 if (err) {
                     callback(err, undefined);
                     return;
                 }
                 if (result) {
-                    result = schema.read(result);
+                    let resultSchema = schema.createInstance();
+                    resultSchema.read(result);
+                    result = resultSchema;
                 }
                 callback(err, result);
             });
