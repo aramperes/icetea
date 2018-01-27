@@ -4,6 +4,7 @@ const bcrypt = require('bcryptjs');
 
 export default class UserSchema extends Schema {
     readonly schema_name: string = "user";
+
     public name: string = undefined;
     public email: string = undefined;
     private password_hash: string = undefined;
