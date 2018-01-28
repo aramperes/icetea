@@ -87,6 +87,15 @@ export default class ApiUsers {
         }
         let id = req.params.id;
         let schema = new UserSchema;
+        if (id === "me") {
+            // check if the user is logged in with the session cookie
+            if (req._icetea.user_id && req._icetea.session_expired === false) {
+                id = req._icetea.user_id;
+            } else {
+                res.status(403).end();
+                return;
+            }
+        }
         if (!ObjectID.isValid(id)) {
             res.status(404).end();
             return;

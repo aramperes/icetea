@@ -29,7 +29,6 @@ export default class AuthLogin {
             res.status(400).json(result);
             return;
         }
-        console.log(content);
 
         for (let field in required_fields) {
             if (!(field in content)) {
