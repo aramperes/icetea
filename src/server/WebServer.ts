@@ -3,7 +3,9 @@ import {Router as ERouter} from "express";
 import {IConfiguration} from "../util/configuration";
 import * as path from "path";
 import {Server} from "net";
+
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 
 export default class WebServer {
     public app: any;
@@ -15,7 +17,9 @@ export default class WebServer {
         this._root_path = root_path;
         this._config = config;
         this.app = express();
+        // built-in middleware
         this.app.use(bodyParser.json());
+        this.app.use(cookieParser());
     }
 
     router(router: Router): WebServer {
@@ -24,6 +28,22 @@ export default class WebServer {
         }
         router._setRootPath(this._root_path);
         this.app.use(router.path, router._router);
+        return this;
+    }
+
+    middleware(middleware: Middleware): WebServer {
+        if (!middleware) {
+            return this;
+        }
+        let mwRoutes = middleware.getAppliesToRoutes();
+        let mw = middleware.middleware(this);
+        if (mwRoutes) {
+            for (let r of mwRoutes) {
+                this.app.use(r, mw);
+            }
+        } else {
+            this.app.use(mw);
+        }
         return this;
     }
 
@@ -73,5 +93,13 @@ export class Router {
 
     _setRootPath(root_path: string) {
         this._root_path = root_path;
+    }
+}
+
+export abstract class Middleware {
+    abstract middleware(server: WebServer): (req, res, next: () => void) => void;
+
+    getAppliesToRoutes(): string[] {
+        return undefined; // undefined = applies to ALL routes
     }
 }

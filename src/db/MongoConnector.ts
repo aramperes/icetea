@@ -1,6 +1,6 @@
 import {IMongoConfiguration} from "../util/configuration";
 import Schema from "./schema/Schema";
-import {Db, InsertOneWriteOpResult, MongoClient, MongoError} from "mongodb";
+import {Db, InsertOneWriteOpResult, MongoClient, MongoError, UpdateWriteOpResult} from "mongodb";
 
 export default class MongoConnector {
     config: IMongoConfiguration;
@@ -89,6 +89,25 @@ export default class MongoConnector {
                     resultSchema.read(result);
                     result = resultSchema;
                 }
+                callback(err, result);
+            });
+        });
+    }
+
+    updateOne(schema: Schema, update: object, callback: (err: MongoError, result: UpdateWriteOpResult) => void): void {
+        let getObject = {};
+        schema.write(getObject);
+        for (let key of Object.keys(getObject)) {
+            if (getObject[key] === undefined) {
+                delete getObject[key];
+            }
+        }
+        this._client.collection(schema.schema_name, (err, collection) => {
+            if (err) {
+                callback(err, undefined);
+                return;
+            }
+            collection.updateOne(getObject, update, (err, result) => {
                 callback(err, result);
             });
         });

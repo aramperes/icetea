@@ -3,6 +3,9 @@ import WebServer from "./server/WebServer";
 import IndexRouter from './server/routers/IndexRouter';
 import ApiRouter from "./server/routers/ApiRouter";
 import MongoConnector from "./db/MongoConnector";
+import AuthRouter from "./server/routers/AuthRouter";
+import AuthMiddleware from "./server/middleware/AuthMiddleware";
+import DefaultMiddleware from "./server/middleware/DefaultMiddleware";
 
 let server = <WebServer> null;
 let shutdown = function (code = 0) {
@@ -37,15 +40,22 @@ mongo.connect((err) => {
 
 function startWebServer() {
     console.log("Starting server...");
-    return new WebServer(__dirname, config).static().router(new ApiRouter).router(new IndexRouter).listen(() => {
-        console.log("Open to connections.")
-    }, (err) => {
-        if (err.code === 'EADDRINUSE') {
-            console.error('Failed to start server, port ' + err.port + ' is already in use.');
-        } else {
-            console.error('An unhandled error occurred while starting the server.');
-            throw err;
-        }
-        process.exit(1);
-    });
+    return new WebServer(__dirname, config)
+        .middleware(new DefaultMiddleware)
+        .middleware(new AuthMiddleware)
+        .static()
+        .router(new ApiRouter)
+        .router(new AuthRouter)
+        .router(new IndexRouter)
+        .listen(() => {
+            console.log("Open to connections.")
+        }, (err) => {
+            if (err.code === 'EADDRINUSE') {
+                console.error('Failed to start server, port ' + err.port + ' is already in use.');
+            } else {
+                console.error('An unhandled error occurred while starting the server.');
+                throw err;
+            }
+            process.exit(1);
+        });
 }
