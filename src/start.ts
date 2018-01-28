@@ -8,6 +8,8 @@ import AuthMiddleware from "./server/middleware/AuthMiddleware";
 import DefaultMiddleware from "./server/middleware/DefaultMiddleware";
 import UserSessionSchema from "./db/schema/UserSessionSchema";
 import * as readline from "readline";
+import * as path from "path";
+import * as fs from "fs";
 
 let server = <WebServer> null;
 
@@ -35,7 +37,7 @@ function peacefulShutdown(code: number = 0) {
 process.on('SIGINT', peacefulShutdown);
 process.on('SIGTERM', peacefulShutdown);
 
-console.log("Welcome to Ice Tea");
+console.log("Welcome to icetea\n");
 console.log("Loading configuration");
 
 const config = new ConfigurationLoader().loadConfiguration();
@@ -57,10 +59,7 @@ mongo.connect((err) => {
 
 function clearExpiredSessions() {
     console.log("Clearing expired sessions from database...");
-    let currentTime = Date.now();
-    let query = new UserSessionSchema();
-    query['expirationTimestamp' + ''] = {$lt: currentTime}; // lower than current time
-    mongo.deleteAll(query, (err, result) => {
+    UserSessionSchema.clearExpiredSessions((err, result) => {
         if (err) {
             console.error("Failed to clear expired sessions: ");
             console.error(err);
@@ -108,6 +107,18 @@ function postInit() {
         input = input.trim();
         if (input.toLowerCase() === "exit" || input.toLowerCase() === "stop") {
             peacefulShutdown();
+            return;
+        }
+        if (input.toLowerCase() === "version" || input.toLowerCase() === "about") {
+            let moduleFile = path.join(__dirname, "../package.json");
+            fs.exists(moduleFile, (exists) => {
+                if (exists === false) {
+                    console.error("Failed to retrieve module information.");
+                } else {
+                    let moduleInfo = require(moduleFile);
+                    console.log("icetea version " + moduleInfo.version);
+                }
+            });
         }
     });
 }

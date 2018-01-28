@@ -2,6 +2,8 @@ import Schema from "./Schema";
 import {ObjectID} from "bson";
 import UserSchema from "./UserSchema";
 import * as crypto from "crypto";
+import {DeleteWriteOpResultObject, MongoCallback} from "mongodb";
+import {mongo} from "../../start";
 
 export default class UserSessionSchema extends Schema {
     // session lifetime (15 weeks) in millis.
@@ -42,6 +44,13 @@ export default class UserSessionSchema extends Schema {
         session.expirationTimestamp = expirationTimestamp;
         session.userId = user._id;
         return session;
+    }
+
+    public static clearExpiredSessions(callback: MongoCallback<DeleteWriteOpResultObject>): void {
+        let currentTime = Date.now();
+        let query = new UserSessionSchema();
+        query['expirationTimestamp' + ''] = {$lt: currentTime}; // lower than current time
+        mongo.deleteAll(query, callback);
     }
 
     // Serialization methods
