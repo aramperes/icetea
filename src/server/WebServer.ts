@@ -1,15 +1,14 @@
 import * as express from "express";
-import {Router as ERouter} from "express";
+import {Express, RequestHandler, Router as ERouter} from "express";
 import {IConfiguration} from "../util/configuration";
 import * as path from "path";
 import {Server} from "net";
-import {error} from "util";
 
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 
 export default class WebServer {
-    public app: any;
+    public app: Express;
     private _root_path: string;
     private _config: IConfiguration;
     private _server: Server;
@@ -36,15 +35,8 @@ export default class WebServer {
         if (!middleware) {
             return this;
         }
-        let mwRoutes = middleware.getAppliesToRoutes();
         let mw = middleware.middleware(this);
-        if (mwRoutes) {
-            for (let r of mwRoutes) {
-                this.app.use(r, mw);
-            }
-        } else {
-            this.app.use(mw);
-        }
+        this.app.use(mw);
         return this;
     }
 
@@ -53,7 +45,7 @@ export default class WebServer {
         return this;
     }
 
-    listen(callback: Function = undefined, errCallback: (err) => any = undefined): WebServer {
+    listen(callback: (server: WebServer) => void = undefined, errCallback: (err) => void = undefined): WebServer {
         this._server = this.app.listen(this._config.port, callback).on('error', (err) => {
             if (errCallback) {
                 errCallback(err);
@@ -78,18 +70,18 @@ export default class WebServer {
 export class Router {
     path: string;
     _root_path: string;
-    _router: ERouter = new ERouter();
+    _router: ERouter = ERouter();
 
     constructor(path: string) {
         this.path = path;
     }
 
-    get(path: string, handler: (req: any, res: any, next: any) => void): Router {
+    get(path: string, handler: RequestHandler): Router {
         this._router.get(path, handler);
         return this;
     }
 
-    post(path: string, handler: (req: any, res: any, next: any) => void): Router {
+    post(path: string, handler: RequestHandler): Router {
         this._router.post(path, handler);
         return this;
     }
@@ -101,8 +93,4 @@ export class Router {
 
 export abstract class Middleware {
     abstract middleware(server: WebServer): (req, res, next: () => void) => void;
-
-    getAppliesToRoutes(): string[] {
-        return undefined; // undefined = applies to ALL routes
-    }
 }
