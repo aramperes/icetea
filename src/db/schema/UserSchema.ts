@@ -1,8 +1,10 @@
 import Schema from "./Schema";
-
-const bcrypt = require('bcryptjs');
+import * as bcrypt from "bcrypt";
 
 export default class UserSchema extends Schema {
+
+    private static readonly HASH_ROUNDS: number = 10;
+
     readonly schema_name: string = "user";
 
     public name: string = undefined;
@@ -13,7 +15,7 @@ export default class UserSchema extends Schema {
         if (!password) {
             return;
         }
-        this.password_hash = bcrypt.hashSync(password, 10);
+        this.password_hash = bcrypt.hashSync(password, UserSchema.HASH_ROUNDS);
     }
 
     password_match(password: string): boolean {
