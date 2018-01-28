@@ -4,6 +4,7 @@ import {
     Db,
     DeleteWriteOpResultObject,
     InsertOneWriteOpResult,
+    MongoCallback,
     MongoClient,
     MongoError,
     UpdateWriteOpResult
@@ -26,7 +27,7 @@ export default class MongoConnector {
         });
     }
 
-    insertOne(schema: Schema, callback: (err: MongoError, result: InsertOneWriteOpResult) => void): void {
+    insertOne(schema: Schema, callback: MongoCallback<InsertOneWriteOpResult>): void {
         let insertObject = {};
         schema.write(insertObject);
         for (let key of Object.keys(insertObject)) {
@@ -39,9 +40,7 @@ export default class MongoConnector {
                 callback(err, undefined);
                 return;
             }
-            collection.insertOne(insertObject, (err, result) => {
-                callback(err, result);
-            });
+            collection.insertOne(insertObject, callback);
         });
     }
 
@@ -101,7 +100,7 @@ export default class MongoConnector {
         });
     }
 
-    updateOne(schema: Schema, update: object, callback: (err: MongoError, result: UpdateWriteOpResult) => void): void {
+    updateOne(schema: Schema, update: object, callback: MongoCallback<UpdateWriteOpResult>): void {
         let getObject = {};
         schema.write(getObject);
         for (let key of Object.keys(getObject)) {
@@ -114,13 +113,11 @@ export default class MongoConnector {
                 callback(err, undefined);
                 return;
             }
-            collection.updateOne(getObject, update, (err, result) => {
-                callback(err, result);
-            });
+            collection.updateOne(getObject, update, callback);
         });
     }
 
-    deleteOne(schema: Schema, callback: (err: MongoError, result: DeleteWriteOpResultObject) => void): void {
+    deleteOne(schema: Schema, callback: MongoCallback<DeleteWriteOpResultObject>): void {
         let getObject = {};
         schema.write(getObject);
         for (let key of Object.keys(getObject)) {
@@ -133,13 +130,11 @@ export default class MongoConnector {
                 callback(err, undefined);
                 return;
             }
-            collection.deleteOne(getObject, (err, result) => {
-                callback(err, result);
-            });
+            collection.deleteOne(getObject, callback);
         });
     }
 
-    deleteAll(schema: Schema, callback: (err: MongoError, result: DeleteWriteOpResultObject) => void): void {
+    deleteAll(schema: Schema, callback: MongoCallback<DeleteWriteOpResultObject>): void {
         let getObject = {};
         schema.write(getObject);
         for (let key of Object.keys(getObject)) {
@@ -152,9 +147,7 @@ export default class MongoConnector {
                 callback(err, undefined);
                 return;
             }
-            collection.deleteMany(getObject, (err, result) => {
-                callback(err, result);
-            });
+            collection.deleteMany(getObject, callback);
         });
     }
 }
