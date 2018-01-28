@@ -34,7 +34,23 @@ export default class AuthMiddleware extends Middleware {
                     next();
                     return;
                 }
-                next();
+                // renew the token
+                result.renew((err, newExpirationTimestamp) => {
+                    if (err) {
+                        throw err;
+                    }
+                    // update the session in the database
+                    mongo.updateOne(result, {expirationTimestamp: newExpirationTimestamp}, (err, _) => {
+                        if (err) {
+                            throw err;
+                        }
+                        // update the cookie
+                        res.cookie('icetea_session_token', session.token.toString('hex'), {
+                            expires: new Date(newExpirationTimestamp)
+                        });
+                        next();
+                    });
+                });
             });
         };
     }
