@@ -69,7 +69,6 @@ function startWebServer() {
         .router(new AuthRouter)
         .router(new IndexRouter)
         .listen((server) => {
-            server.
             console.log("Open to connections.");
             postInit();
         }, (err) => {
