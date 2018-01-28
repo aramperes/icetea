@@ -23,11 +23,11 @@ export default class AuthMiddleware extends Middleware {
                 }
                 if (!session) {
                     // no session matches the token
-                    console.log('received an unknown session token, ignoring.');
+                    console.debug('received an unknown session token, ignoring.');
                     next();
                     return;
                 }
-                console.log('found session, userID=' + session.userId.toHexString());
+                console.debug('found session, userID=' + session.userId.toHexString());
                 req._icetea['user_id'] = session.userId.toHexString();
                 req._icetea['session_expired'] = false;
                 if (session.isExpired()) {

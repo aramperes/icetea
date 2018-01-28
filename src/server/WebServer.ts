@@ -92,5 +92,5 @@ export class Router {
 }
 
 export abstract class Middleware {
-    abstract middleware(server: WebServer): (req, res, next: () => void) => void;
+    abstract middleware(server: WebServer): RequestHandler;
 }

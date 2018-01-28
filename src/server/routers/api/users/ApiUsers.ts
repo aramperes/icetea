@@ -22,7 +22,7 @@ export default class ApiUsers {
         let content = req.body;
         let result = {
             success: false,
-            message: "Content is invalid."
+            message: "Content is invalid, expected an object."
         };
         const required_fields = {
             'name': 'string',
@@ -85,30 +85,50 @@ export default class ApiUsers {
             res.status(400).end();
             return;
         }
-        let id = req.params.id;
-        let schema = new UserSchema;
-        if (id === "me") {
-            // check if the user is logged in with the session cookie
-            if (req._icetea.user_id && req._icetea.session_expired === false) {
-                id = req._icetea.user_id;
-            } else {
-                res.status(403).end();
-                return;
-            }
+        let id = this.parseUserId(req, res, "id");
+        if (!id) {
+            return;
         }
         if (!ObjectID.isValid(id)) {
+            // not a valid ObjectID, 404 (Not Found).
             res.status(404).end();
             return;
         }
+        let schema = new UserSchema;
         schema._id = new ObjectID(id);
         mongo.getOne(schema, (err, result) => {
             if (err) {
-                res.json(err);
+                // something went wrong, 500 (Server Error).
+                res.status(500).json(err);
             } else if (result) {
                 res.json(result);
             } else {
+                // no user matches the ID, 404 (Not Found).
                 res.status(404).end();
             }
         });
+    }
+
+    private static parseUserId(req, res, paramName): string {
+        // if there is no param with that name, 400 (Bad Request).
+        if (!req.params[paramName]) {
+            res.status(400).end();
+            return undefined;
+        }
+        let id = req.params[paramName];
+        // "me" represents the logged-in user
+        if (id === "me") {
+            // check if there is a user, and the session isn't expired
+            if (req._icetea.user_id && req._icetea.session_expired === false) {
+                // switch "me" to the ID of the user
+                id = req._icetea.user_id;
+            } else {
+                // can't use "me", 403 (Unauthorized).
+                res.status(403).end();
+                return undefined;
+            }
+        }
+        // no "me", go through.
+        return id;
     }
 }

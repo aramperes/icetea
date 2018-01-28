@@ -10,7 +10,8 @@ import UserSessionSchema from "./db/schema/UserSessionSchema";
 import * as readline from "readline";
 
 let server = <WebServer> null;
-let shutdown = function (code = 0) {
+
+function shutdown(code: number = 0) {
     if (server) {
         server.close(() => {
             process.exit(code);
@@ -18,10 +19,21 @@ let shutdown = function (code = 0) {
     } else {
         process.exit(code);
     }
-};
+}
 
-process.on('SIGINT', shutdown);
-process.on('SIGTERM', shutdown);
+function peacefulShutdown(code: number = 0) {
+    console.log("Stopping server...");
+    server.close(() => {
+        console.log("Closing database connection...");
+        mongo._client.close(() => {
+            console.log("Server closed.");
+            process.exit(0);
+        });
+    });
+}
+
+process.on('SIGINT', peacefulShutdown);
+process.on('SIGTERM', peacefulShutdown);
 
 console.log("Welcome to Ice Tea");
 console.log("Loading configuration");
@@ -83,28 +95,19 @@ function startWebServer() {
 }
 
 function postInit() {
+    console.log("Enter 'stop' or 'exit' to close the server.");
     let rl = readline.createInterface({
         input: process.stdin,
         output: process.stdout,
         terminal: true
     });
-    rl.setPrompt('> ');
     rl.on('line', (input) => {
         if (!input) {
-            rl.prompt();
             return;
         }
         input = input.trim();
         if (input.toLowerCase() === "exit" || input.toLowerCase() === "stop") {
-            console.log("Stopping server...");
-            server.close(() => {
-                console.log("Closing database connection...");
-                mongo._client.close(() => {
-                    console.log("Server closed.");
-                    process.exit(0);
-                });
-            });
+            peacefulShutdown();
         }
     });
-    rl.prompt();
 }
