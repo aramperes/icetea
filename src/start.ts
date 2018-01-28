@@ -7,13 +7,17 @@ import AuthRouter from "./server/routers/AuthRouter";
 import AuthMiddleware from "./server/middleware/AuthMiddleware";
 import DefaultMiddleware from "./server/middleware/DefaultMiddleware";
 import UserSessionSchema from "./db/schema/UserSessionSchema";
+import * as readline from "readline";
 
 let server = <WebServer> null;
 let shutdown = function (code = 0) {
     if (server) {
-        server.close();
+        server.close(() => {
+            process.exit(code);
+        });
+    } else {
+        process.exit(code);
     }
-    process.exit(code);
 };
 
 process.on('SIGINT', shutdown);
@@ -43,7 +47,7 @@ function clearExpiredSessions() {
     console.log("Clearing expired sessions from database...");
     let currentTime = Date.now();
     let query = new UserSessionSchema();
-    query['expirationTimestamp' + ''] = { $lt: currentTime }; // lower than current time
+    query['expirationTimestamp' + ''] = {$lt: currentTime}; // lower than current time
     mongo.deleteAll(query, (err, result) => {
         if (err) {
             console.error("Failed to clear expired sessions: ");
@@ -65,7 +69,8 @@ function startWebServer() {
         .router(new AuthRouter)
         .router(new IndexRouter)
         .listen(() => {
-            console.log("Open to connections.")
+            console.log("Open to connections.");
+            postInit();
         }, (err) => {
             if (err.code === 'EADDRINUSE') {
                 console.error('Failed to start server, port ' + err.port + ' is already in use.');
@@ -75,4 +80,31 @@ function startWebServer() {
             }
             process.exit(1);
         });
+}
+
+function postInit() {
+    let rl = readline.createInterface({
+        input: process.stdin,
+        output: process.stdout,
+        terminal: true
+    });
+    rl.setPrompt('> ');
+    rl.on('line', (input) => {
+        if (!input) {
+            rl.prompt();
+            return;
+        }
+        input = input.trim();
+        if (input.toLowerCase() === "exit" || input.toLowerCase() === "stop") {
+            console.log("Stopping server...");
+            server.close(() => {
+                console.log("Closing database connection...");
+                mongo._client.close(() => {
+                    console.log("Server closed.");
+                    process.exit(0);
+                });
+            });
+        }
+    });
+    rl.prompt();
 }

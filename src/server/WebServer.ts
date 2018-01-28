@@ -3,6 +3,7 @@ import {Router as ERouter} from "express";
 import {IConfiguration} from "../util/configuration";
 import * as path from "path";
 import {Server} from "net";
+import {error} from "util";
 
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
@@ -65,9 +66,11 @@ export default class WebServer {
         return this._root_path;
     }
 
-    close(): void {
+    close(callback: () => void): void {
         if (this._server && this._server.listening) {
-            this._server.close();
+            this._server.close(callback);
+        } else {
+            callback();
         }
     }
 }
