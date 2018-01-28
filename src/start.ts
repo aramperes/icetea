@@ -6,6 +6,7 @@ import MongoConnector from "./db/MongoConnector";
 import AuthRouter from "./server/routers/AuthRouter";
 import AuthMiddleware from "./server/middleware/AuthMiddleware";
 import DefaultMiddleware from "./server/middleware/DefaultMiddleware";
+import UserSessionSchema from "./db/schema/UserSessionSchema";
 
 let server = <WebServer> null;
 let shutdown = function (code = 0) {
@@ -35,8 +36,24 @@ mongo.connect((err) => {
         return;
     }
     console.log("Connected to database.");
-    server = startWebServer();
+    clearExpiredSessions();
 });
+
+function clearExpiredSessions() {
+    console.log("Clearing expired sessions from database...");
+    let currentTime = Date.now();
+    let query = new UserSessionSchema();
+    query['expirationTimestamp' + ''] = { $lt: currentTime }; // lower than current time
+    mongo.deleteAll(query, (err, result) => {
+        if (err) {
+            console.error("Failed to clear expired sessions: ");
+            console.error(err);
+        } else {
+            console.log("Cleared " + result.deletedCount + " expired sessions.");
+        }
+        server = startWebServer();
+    });
+}
 
 function startWebServer() {
     console.log("Starting server...");

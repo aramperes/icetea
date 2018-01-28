@@ -133,6 +133,25 @@ export default class MongoConnector {
                 callback(err, undefined);
                 return;
             }
+            collection.deleteOne(getObject, (err, result) => {
+                callback(err, result);
+            });
+        });
+    }
+
+    deleteAll(schema: Schema, callback: (err: MongoError, result: DeleteWriteOpResultObject) => void): void {
+        let getObject = {};
+        schema.write(getObject);
+        for (let key of Object.keys(getObject)) {
+            if (getObject[key] === undefined) {
+                delete getObject[key];
+            }
+        }
+        this._client.collection(schema.schema_name, (err, collection) => {
+            if (err) {
+                callback(err, undefined);
+                return;
+            }
             collection.deleteMany(getObject, (err, result) => {
                 callback(err, result);
             });

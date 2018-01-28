@@ -35,7 +35,7 @@ export default class UserSessionSchema extends Schema {
         if (!user) {
             return undefined;
         }
-        let token = crypto.randomBytes(128);
+        let token = crypto.randomBytes(this.TOKEN_LENGTH);
         let expirationTimestamp = Date.now() + this.SESSION_LIFETIME;
         let session = new UserSessionSchema();
         session.token = token;
@@ -53,7 +53,9 @@ export default class UserSessionSchema extends Schema {
     write(o: object): void {
         super.write(o);
         o["userId"] = this.userId;
-        o["token"] = this.token.toString('hex');
+        if (this.token) {
+            o["token"] = this.token.toString('hex');
+        }
         o["expirationTimestamp"] = this.expirationTimestamp;
     }
 
