@@ -3,11 +3,14 @@ import UserSessionSchema from "../../db/schema/UserSessionSchema";
 import {mongo} from "../../start";
 
 export default class AuthMiddleware extends Middleware {
+
+    public static readonly COOKIE_SESSION_ID: string = "icetea_session";
+
     middleware(server: WebServer): (req, res, next: () => void) => void {
         return (req, res, next) => {
             // check for the session cookies
             // todo: OAuth and Basic Authorization
-            let icetea_session_token = req.cookies['icetea_session_token'];
+            let icetea_session_token = req.cookies[AuthMiddleware.COOKIE_SESSION_ID];
             if (!icetea_session_token) {
                 next();
                 return;
@@ -61,8 +64,9 @@ export default class AuthMiddleware extends Middleware {
                             return;
                         }
                         // update the cookie
-                        res.cookie('icetea_session_token', session.token.toString('hex'), {
-                            expires: new Date(newExpirationTimestamp)
+                        res.cookie(AuthMiddleware.COOKIE_SESSION_ID, session.token.toString('hex'), {
+                            expires: new Date(newExpirationTimestamp),
+                            httpOnly: true
                         });
                         next();
                     });

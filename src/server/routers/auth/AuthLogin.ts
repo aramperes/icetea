@@ -1,12 +1,14 @@
 import UserSchema from "../../../db/schema/UserSchema";
 import {mongo} from "../../../start";
 import UserSessionSchema from "../../../db/schema/UserSessionSchema";
+import AuthMiddleware from "../../middleware/AuthMiddleware";
+import {Response} from "express";
 
 export default class AuthLogin {
     private constructor() {
     }
 
-    static executeLogin(req, res): void {
+    static executeLogin(req, res: Response): void {
         // check if we're already logged in
         if (req._icetea.user_id && req._icetea.session_expired === false) {
             // already logged in, do nothing.
@@ -70,8 +72,9 @@ export default class AuthLogin {
                     return;
                 }
                 // set the cookie
-                res.cookie('icetea_session_token', session.token.toString('hex'), {
-                    expires: new Date(session.expirationTimestamp)
+                res.cookie(AuthMiddleware.COOKIE_SESSION_ID, session.token.toString('hex'), {
+                    expires: new Date(session.expirationTimestamp),
+                    httpOnly: true
                 });
                 res.status(200).json({success: true});
             });

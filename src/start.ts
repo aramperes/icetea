@@ -37,6 +37,10 @@ function peacefulShutdown(code: number = 0) {
 process.on('SIGINT', peacefulShutdown);
 process.on('SIGTERM', peacefulShutdown);
 
+console.debug = (message: string) => {
+    console.log("debug> " + message);
+};
+
 console.log("Welcome to icetea\n");
 console.log("Loading configuration");
 
