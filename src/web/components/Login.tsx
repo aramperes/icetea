@@ -1,5 +1,5 @@
 import * as React from "react";
-import "./BaseStyle.css"
+// import "./BaseStyle.css"
 
 export interface LoginProps {
 }
