@@ -1,4 +1,4 @@
-import {mongo} from "../../../../start";
+import {config, mongo} from "../../../../start";
 import UserSchema from "../../../../db/schema/UserSchema";
 import {ObjectID} from "bson";
 
@@ -63,18 +63,57 @@ export default class ApiUsers {
                 res.status(400).json(result);
                 return;
             }
-            schema.email = content.email;
-            schema.set_password(content.password);
-            mongo.insertOne(schema, (err, mongoResult) => {
-                if (err) {
-                    res.status(500).json(err);
+            let is_admin = false;
+            let create = function () {
+                schema.email = content.email;
+                schema.is_admin = is_admin;
+                schema.set_password(content.password);
+                mongo.insertOne(schema, (err, mongoResult) => {
+                    if (err) {
+                        res.status(500).json(err);
+                        return;
+                    }
+                    result.success = true;
+                    result.message = "User created successfully.";
+                    result['id'] = mongoResult.insertedId.toHexString();
+                    res.status(200).json(result);
+                });
+            };
+            let is_default_admin = config.general.admin_username && content.name === config.general.admin_username;
+            if (content.admin === true || is_default_admin === true) {
+                // only admins can create other admins,
+                // or if the username is the default admin name.
+                if (is_default_admin === true) {
+                    is_admin = true;
+                    create();
+                } else if (req['_icetea'].isAuthenticated()) {
+                    // check if the user is an admin
+                    let me = new UserSchema();
+                    me._id = req['_icetea'].user_id;
+                    mongo.getOne(me, (err, me) => {
+                        if (err) {
+                            res.status(500).json(err);
+                            return;
+                        }
+                        if (me && me.is_admin === true) {
+                            is_admin = true;
+                            create();
+                        } else {
+                            // cannot make an admin
+                            result.message = "Only administrators can create other administrator accounts.";
+                            res.status(403).json(result);
+                            return;
+                        }
+                    });
+                } else {
+                    // cannot make an admin
+                    result.message = "Only administrators can create other administrator accounts.";
+                    res.status(403).json(result);
                     return;
                 }
-                result.success = true;
-                result.message = "User created successfully.";
-                result['id'] = mongoResult.insertedId.toHexString();
-                res.status(200).json(result);
-            });
+            } else {
+                create();
+            }
         });
     }
 

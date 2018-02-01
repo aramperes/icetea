@@ -3,6 +3,7 @@ import * as path from "path";
 
 export interface IConfiguration {
     port: number;
+    general: IGeneralConfiguration;
     mongodb: IMongoConfiguration;
 }
 
@@ -17,6 +18,11 @@ export interface IMongoDatabaseConfiguration {
     auth: boolean;
     username: string;
     password: string;
+}
+
+export interface IGeneralConfiguration {
+    open_registration: boolean; // whether registration is open to anyone (true) or only admins (false)
+    admin_username: string; // username of the default administrator, to be registered
 }
 
 export class ConfigurationLoader {

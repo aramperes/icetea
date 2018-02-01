@@ -1,5 +1,9 @@
 {
   "port": 8080,
+  "general": {
+    "open_registration": false,
+    "admin_username": "icetea_admin"
+  },
   "mongodb": {
     "host": "localhost",
     "port": 27017,

@@ -9,6 +9,7 @@ export default class UserSchema extends Schema {
 
     public name: string = undefined;
     public email: string = undefined;
+    public is_admin: boolean = undefined;
     private password_hash: string = undefined;
 
     set_password(password: string): void {
@@ -35,6 +36,7 @@ export default class UserSchema extends Schema {
         super.write(o);
         this.writePublic(o);
         o["password_hash"] = this.password_hash;
+        o["is_admin"] = this.is_admin;
     }
 
     read(o: object): void {
@@ -42,6 +44,7 @@ export default class UserSchema extends Schema {
         this.name = o["name"];
         this.email = o["email"];
         this.password_hash = o["password_hash"];
+        this.is_admin = o["is_admin"];
     }
 
     createInstance(): Schema {

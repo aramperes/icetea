@@ -10,6 +10,7 @@ import UserSessionSchema from "./db/schema/UserSessionSchema";
 import * as readline from "readline";
 import * as path from "path";
 import * as fs from "fs";
+import UserSchema from "./db/schema/UserSchema";
 
 let server = <WebServer> null;
 
@@ -44,7 +45,7 @@ console.debug = (message: string) => {
 console.log("Welcome to icetea\n");
 console.log("Loading configuration");
 
-const config = new ConfigurationLoader().loadConfiguration();
+export const config = new ConfigurationLoader().loadConfiguration();
 console.log("port: " + config.port);
 console.log("database: " + config.mongodb.host + ":" + config.mongodb.port + "/" + config.mongodb.database.name + " (auth:" + config.mongodb.database.auth + ")");
 
@@ -97,32 +98,60 @@ function startWebServer() {
         });
 }
 
-function postInit() {
-    console.log("Enter 'stop' or 'exit' to close the server.");
-    let rl = readline.createInterface({
-        input: process.stdin,
-        output: process.stdout,
-        terminal: true
+function checkDefaultAdmin(callback: () => any) {
+    let admin_username = config.general.admin_username;
+    if (!admin_username || admin_username.trim() === "") {
+        console.warn("***" +
+            "\n  Warning: Default administrator username is not set in the configuration." +
+            "\n  This option is found at dist/config.json/general/admin_username." +
+            "\n***");
+        callback();
+        return;
+    }
+    let user = new UserSchema();
+    user.name = admin_username;
+    mongo.getOne(user, (err, result) => {
+        if (err) {
+            throw err;
+        }
+        if (!result) {
+            console.warn("***" +
+                "\n  Warning: Could not find default administrator '" + admin_username + "'." +
+                "\n  Creating an account with this name will make it an administrator automatically." +
+                "\n***");
+        }
+        callback();
     });
-    rl.on('line', (input) => {
-        if (!input) {
-            return;
-        }
-        input = input.trim();
-        if (input.toLowerCase() === "exit" || input.toLowerCase() === "stop") {
-            peacefulShutdown();
-            return;
-        }
-        if (input.toLowerCase() === "version" || input.toLowerCase() === "about") {
-            let moduleFile = path.join(__dirname, "../package.json");
-            fs.exists(moduleFile, (exists) => {
-                if (exists === false) {
-                    console.error("Failed to retrieve module information.");
-                } else {
-                    let moduleInfo = require(moduleFile);
-                    console.log("icetea version " + moduleInfo.version);
-                }
-            });
-        }
+}
+
+function postInit() {
+    checkDefaultAdmin(() => {
+        console.log("Enter 'stop' or 'exit' to close the server.");
+        let rl = readline.createInterface({
+            input: process.stdin,
+            output: process.stdout,
+            terminal: true
+        });
+        rl.on('line', (input) => {
+            if (!input) {
+                return;
+            }
+            input = input.trim();
+            if (input.toLowerCase() === "exit" || input.toLowerCase() === "stop") {
+                peacefulShutdown();
+                return;
+            }
+            if (input.toLowerCase() === "version" || input.toLowerCase() === "about") {
+                let moduleFile = path.join(__dirname, "../package.json");
+                fs.exists(moduleFile, (exists) => {
+                    if (exists === false) {
+                        console.error("Failed to retrieve module information.");
+                    } else {
+                        let moduleInfo = require(moduleFile);
+                        console.log("icetea version " + moduleInfo.version);
+                    }
+                });
+            }
+        });
     });
 }
