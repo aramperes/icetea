@@ -8,11 +8,11 @@ export default class AuthLogin {
     private constructor() {
     }
 
-    static executeLogin(req, res: Response): void {
+    static executeLogin(req, res: Response, callback: (errMessage?: string, errCode?: number) => void): void {
         // check if we're already logged in
         if (req._icetea.user_id && req._icetea.session_expired === false) {
             // already logged in, do nothing.
-            res.status(200).json({success: true});
+            callback();
             return;
         }
 
@@ -28,20 +28,20 @@ export default class AuthLogin {
 
         // validate input
         if (!content || typeof content != "object") {
-            res.status(400).json(result);
+            callback(result.message, 400);
             return;
         }
 
         for (let field in required_fields) {
             if (!(field in content)) {
                 result.message = "Required field '" + field + "' is missing.";
-                res.status(400).json(result);
+                callback(result.message, 400);
                 return;
             }
             if (typeof content[field] != required_fields[field]) {
                 result.message = "Field '" + field + "' is of type " + (typeof content[field]) +
                     " (" + JSON.stringify(content[field]) + "), expected " + required_fields[field];
-                res.status(400).json(result);
+                callback(result.message, 400);
                 return;
             }
         }
@@ -52,15 +52,15 @@ export default class AuthLogin {
         schema.name = content.username;
         mongo.getOne(schema, (err, user) => {
             if (err) {
-                res.status(500).json(err);
+                callback(err.toString(), 500);
                 return;
             }
             if (!user) {
-                res.status(403).json(result);
+                callback(result.message, 403);
                 return;
             }
             if (!user.password_match(content.password)) {
-                res.status(403).json(result);
+                callback(result.message, 403);
                 return;
             }
             // user and password correct, create session
@@ -68,7 +68,7 @@ export default class AuthLogin {
             // put the session in the database
             mongo.insertOne(session, (err, result) => {
                 if (err) {
-                    res.status(500).json(err);
+                    callback(err.toString(), 500);
                     return;
                 }
                 // set the cookie
@@ -76,7 +76,7 @@ export default class AuthLogin {
                     expires: new Date(session.expirationTimestamp),
                     httpOnly: true
                 });
-                res.status(200).json({success: true});
+                callback();
             });
         });
     }

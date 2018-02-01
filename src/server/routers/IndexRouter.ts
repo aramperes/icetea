@@ -8,20 +8,12 @@ import UserSchema from "../../db/schema/UserSchema";
 import {mongo} from "../../start";
 import {ObjectID} from "bson";
 import {Request} from "express";
-import Login from "../../web/components/Login";
 
 export default class IndexRouter extends Router {
     constructor() {
         super('/');
         this.get('/login', (req, res) => {
-            if (req['_icetea'].isAuthenticated()) {
-                // already logged-in, redirect to home
-                res.redirect(req.url);
-            } else {
-                let render = IndexRouter.renderWithContainer(req, "Login",
-                    React.createElement(Login));
-                res.send(render);
-            }
+            res.redirect('/auth/login');
         });
         this.get('/', (req, res) => {
             let sendHome = function (userSchema: UserSchema) {
@@ -54,7 +46,7 @@ export default class IndexRouter extends Router {
         });
     }
 
-    private static renderWithContainer(req: Request, title: string, child: any): string {
+    static renderWithContainer(req: Request, title: string, child: any): string {
         return renderToString(React.createElement(App, {
             content: React.createElement(IceTeaContainer, {
                 url: req.url,

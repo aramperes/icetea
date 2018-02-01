@@ -29,7 +29,7 @@ export default class Home extends React.Component<HomeProps, {}> {
         } else {
             return (
                 <div>
-                    You are not logged in. <a href={"/login"}>Login here.</a>
+                    You are not logged in. <a href={"/auth/login"}>Login here.</a>
                 </div>
             );
         }
