@@ -39,7 +39,11 @@ export default class Login extends React.Component<LoginProps, {}> {
     renderGateMessage(): JSX.Element {
         if (this.props.gate_message) {
             return (
-                <div>Failed :(</div>
+                <div>
+                    <strong>
+                        {this.props.gate_message.title}: {this.props.gate_message.content}
+                    </strong>
+                </div>
             );
         } else {
             return undefined;
