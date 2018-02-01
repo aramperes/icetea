@@ -50,6 +50,8 @@ export default class ApiUsers {
             }
         }
 
+        // todo: check if registration is open
+
         // check if there is already a user with that name
         let schema = new UserSchema;
         schema.name = content.name;
