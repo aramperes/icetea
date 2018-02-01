@@ -19,7 +19,19 @@ export default class Home extends React.Component<HomeProps, {}> {
         );
     }
 
-    getWelcomeMessage(): string {
-        return this.props.user ? "Welcome, " + this.props.user.name + "." : "You are not logged in.";
+    getWelcomeMessage(): JSX.Element {
+        if (this.props.user) {
+            return (
+                <div>
+                    Welcome, {this.props.user.name}.
+                </div>
+            );
+        } else {
+            return (
+                <div>
+                    You are not logged in. <a href={"/login"}>Login here.</a>
+                </div>
+            );
+        }
     }
 }

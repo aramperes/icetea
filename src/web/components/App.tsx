@@ -10,7 +10,7 @@ export default class App extends React.Component<AppContainerProps, {}> {
         return (
             <html>
             <head>
-                <title>{this.props.title}&nbsp;&middot;&nbsp;icetea</title>
+                <title>{this.getTitle()}</title>
                 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
                 <link rel="stylesheet" href="/public/style.css"/>
             </head>
@@ -22,5 +22,9 @@ export default class App extends React.Component<AppContainerProps, {}> {
             </body>
             </html>
         )
+    }
+
+    getTitle(): string {
+        return (this.props.title ? this.props.title : "Page") + " \u00B7 icetea";
     }
 }
