@@ -1,5 +1,10 @@
+@font-face {
+    font-family: 'Ubuntu';
+    src: url("Ubuntu.ttf");
+}
+
 .IceTeaContainer-global {
-    font-family: Arial, sans-serif;
+    font-family: 'Ubuntu', sans-serif;
     width: 100%;
 }
 
@@ -25,7 +30,7 @@
     height: 100%;
     background-repeat: no-repeat;
     background-position: center;
-    background-image: url("/public/icon.png");
+    background-image: url("icon.png");
     background-size: 40px;
 }
 
