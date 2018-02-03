@@ -20,12 +20,15 @@
     white-space: nowrap;
 }
 
+.IceTeaContainer-navbar > a {
+    margin: 0 7px;
+}
+
 .IceTeaContainer-navbar-icon {
     text-align: center;
     line-height: 45px;
     display: inline-block;
     cursor: pointer;
-    margin: 0 7px;
     font-weight: bold;
     padding: 0 25px;
     height: 100%;
@@ -48,7 +51,6 @@
     line-height: 45px;
     display: inline-block;
     cursor: pointer;
-    margin: 0 7px;
     font-weight: bold;
     color: #222;
     padding: 0 10px;
@@ -86,7 +88,7 @@
     height: 30px;
     border: none;
     background-color: #F0F0F0;
-    border-radius: 3px;
+    border-radius: 0.25rem;
     color: #444;
     padding-left: 10px;
     font-family: 'Ubuntu', sans-serif;
@@ -113,6 +115,10 @@
     margin-bottom: 0;
     box-shadow: 0 1px 5px #AAA;
     border-radius: .25rem;
+}
+
+.IceTeaContainer-navbar-searchresults-group.hidden {
+    display: none;
 }
 
 .IceTeaContainer-navbar-searchresults-item {

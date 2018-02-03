@@ -10,7 +10,7 @@ export interface IceTeaContainerProps {
 export default class IceTeaContainer extends React.Component<IceTeaContainerProps, {}> {
     render() {
         return (
-            <div className={"IceTeaContainer-global"}>
+            <div className={"IceTeaContainer-global"} id={"IceTeaContainer"}>
                 {this.createNavbar()}
                 {this.props.child}
             </div>
@@ -51,9 +51,10 @@ export default class IceTeaContainer extends React.Component<IceTeaContainerProp
                 </a>
                 {domNav}
                 <div className={"IceTeaContainer-navbar-search-group"}>
-                    <input type="text" id="navbar-search" className={"IceTeaContainer-navbar-search"}
+                    <input type="text" id="IceTeaContainer-navbar-search" className={"IceTeaContainer-navbar-search"}
                            placeholder={"Search"}/>
-                    <div className={"IceTeaContainer-navbar-searchresults-group"}>
+                    <div className={"IceTeaContainer-navbar-searchresults-group hidden"}
+                         id={"IceTeaContainer-navbar-searchresults"}>
                         <a href={"/issues/ABC-123"} className={"IceTeaContainer-navbar-searchresults-item"}>
                             <span className={"IceTeaContainer-navbar-searchresults-item-title"}>
                                 [ABC-123] Please fix this bug

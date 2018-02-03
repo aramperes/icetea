@@ -47,7 +47,9 @@ export default class WebServer {
     }
 
     listen(callback: (server: WebServer) => void = undefined, errCallback: (err) => void = undefined): WebServer {
-        this._server = this.app.listen(this._config.port, callback).on('error', (err) => {
+        this._server = this.app.listen(this._config.port, () => {
+            callback(this);
+        }).on('error', (err) => {
             if (errCallback) {
                 errCallback(err);
             }
