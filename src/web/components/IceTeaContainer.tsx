@@ -55,13 +55,28 @@ export default class IceTeaContainer extends React.Component<IceTeaContainerProp
                            placeholder={"Search"}/>
                     <div className={"IceTeaContainer-navbar-searchresults-group"}>
                         <a href={"/issues/ABC-123"} className={"IceTeaContainer-navbar-searchresults-item"}>
-                            [ABC-123] Please fix this bug
+                            <span className={"IceTeaContainer-navbar-searchresults-item-title"}>
+                                [ABC-123] Please fix this bug
+                            </span>
+                            <span className={"label-status status-investigating"}>Investigating</span>
                         </a>
-                        <a href={"/issues/ABC-123"} className={"IceTeaContainer-navbar-searchresults-item"}>
-                            [ABC-456] The page loads slowly!
+                        <a href={"/issues/ABC-456"} className={"IceTeaContainer-navbar-searchresults-item"}>
+                            <span className={"IceTeaContainer-navbar-searchresults-item-title"}>
+                                [ABC-456] The page loads slowly!
+                            </span>
+                            <span className={"label-status status-open"}>Open</span>
                         </a>
-                        <a href={"/issues/ABC-123"} className={"IceTeaContainer-navbar-searchresults-item"}>
-                            [ABC-789] ice tea is the best
+                        <a href={"/issues/ABC-789"} className={"IceTeaContainer-navbar-searchresults-item"}>
+                            <span className={"IceTeaContainer-navbar-searchresults-item-title"}>
+                                [ABC-789] ice tea is the best
+                            </span>
+                            <span className={"label-status status-inprogress"}>In Progress</span>
+                        </a>
+                        <a href={"/issues/ABC-999"} className={"IceTeaContainer-navbar-searchresults-item"}>
+                            <span className={"IceTeaContainer-navbar-searchresults-item-title"}>
+                                [ABC-999] New feature: make everything in React.JS
+                            </span>
+                            <span className={"label-status status-inprogress"}>In Progress</span>
                         </a>
                     </div>
                 </div>

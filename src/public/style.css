@@ -39,6 +39,10 @@
     background-color: #F0F0F0;
 }
 
+.IceTeaContainer-navbar-icon:focus {
+    background-color: #F0F0F0;
+}
+
 .IceTeaContainer-navbar-item {
     text-align: center;
     line-height: 45px;
@@ -83,8 +87,11 @@
     border: none;
     background-color: #F0F0F0;
     border-radius: 3px;
-    color: #555;
+    color: #444;
     padding-left: 10px;
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 14px;
+    letter-spacing: 1px;
 }
 
 .IceTeaContainer-navbar-search:focus {
@@ -120,6 +127,7 @@
     color: #606060;
     text-align: inherit;
     box-sizing: border-box;
+    white-space: normal;
 }
 
 .IceTeaContainer-navbar-searchresults-item:hover {
@@ -134,6 +142,32 @@
 .IceTeaContainer-navbar-searchresults-item:last-child {
     border-bottom-right-radius: .25rem;
     border-bottom-left-radius: .25rem;
+}
+
+.IceTeaContainer-navbar-searchresults-item-title {
+}
+
+.IceTeaContainer-navbar-searchresults-item .label-status {
+    float: right;
+    border-radius: 0.2rem;
+    padding: 1px 7px;
+    font-size: 14px;
+}
+
+.IceTeaContainer-navbar-searchresults-item .status-inprogress {
+    color: #FAFAFA;
+    background-color: rgb(223, 37, 89);
+}
+
+.IceTeaContainer-navbar-searchresults-item .status-investigating {
+    color: #FAFAFA;
+    background-color: rgb(18, 127, 163);
+}
+
+.IceTeaContainer-navbar-searchresults-item .status-open {
+    color: rgb(78, 107, 223);
+    background-color: white;
+    border: solid 1px rgb(78, 107, 223);
 }
 
 .BaseStyle-page-content {
