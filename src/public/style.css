@@ -17,6 +17,7 @@
     background-color: white;
     box-shadow: 0 1px 3px #AAA;
     cursor: default;
+    white-space: nowrap;
 }
 
 .IceTeaContainer-navbar-icon {
@@ -67,6 +68,74 @@
     border-bottom: 2px solid #e92f60;
     box-sizing: border-box;
 }
+
+.IceTeaContainer-navbar-search-group {
+    width: 50%;
+    display: inline-block;
+    vertical-align: top;
+    margin-top: 7px;
+    margin-left: 15px;
+}
+
+.IceTeaContainer-navbar-search {
+    width: 100%;
+    height: 30px;
+    border: none;
+    background-color: #F0F0F0;
+    border-radius: 3px;
+    color: #555;
+    padding-left: 10px;
+}
+
+.IceTeaContainer-navbar-search:focus {
+    background-color: #DADADA;
+}
+
+.IceTeaContainer-navbar-searchresults-group {
+    position: relative;
+    top: 15px;
+    max-width: 100%;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    padding-left: 0;
+    margin-bottom: 0;
+    box-shadow: 0 1px 5px #AAA;
+    border-radius: .25rem;
+}
+
+.IceTeaContainer-navbar-searchresults-item {
+    text-decoration: none;
+    position: relative;
+    display: block;
+    padding: 0.5rem 1rem;
+    margin-bottom: -1px;
+    background-color: #fff;
+    border: 1px solid rgba(0, 0, 0, .125);
+    width: 100%;
+    color: #606060;
+    text-align: inherit;
+    box-sizing: border-box;
+}
+
+.IceTeaContainer-navbar-searchresults-item:hover {
+    background-color: #EEE;
+}
+
+.IceTeaContainer-navbar-searchresults-item:first-child {
+    border-top-left-radius: .25rem;
+    border-top-right-radius: .25rem;
+}
+
+.IceTeaContainer-navbar-searchresults-item:last-child {
+    border-bottom-right-radius: .25rem;
+    border-bottom-left-radius: .25rem;
+}
+
 .BaseStyle-page-content {
     margin: 60px 0;
     width: 100%;
