@@ -1,9 +1,11 @@
 import * as React from "react";
+import UserSchema from "../../db/schema/UserSchema";
 
 // import "./IceTeaContainer.css"
 
 export interface IceTeaContainerProps {
     child: any;
+    user: UserSchema;
     url: string;
 }
 
@@ -12,9 +14,37 @@ export default class IceTeaContainer extends React.Component<IceTeaContainerProp
         return (
             <div className={"IceTeaContainer-global"} id={"IceTeaContainer"}>
                 {this.createNavbar()}
-                {this.props.child}
+                <div className={"IceTeaContainer-global-content"}>
+                    {this.props.child}
+                </div>
+                <div className={"IceTeaContainer-global-footer"}>
+                    <p>
+                        {this.getFooterMessage()}
+
+                    </p>
+                    <p>
+                        <a href={"https://www.icetea.io"}>ice tea</a> is open-source software, licensed under the MIT.
+                        <br />
+                        &copy; 2018 ice tea.
+                    </p>
+                </div>
             </div>
         );
+    }
+
+    getFooterMessage(): JSX.Element {
+        if (this.props.user) {
+            return (
+                <div>
+                    You are logged in as demo &mdash; <a href={"/auth/logout"}>Logout</a>
+                </div>
+            );
+        }
+        return (
+            <div>
+                You are not signed in &mdash; <a href={"/auth/login"}>Login</a>
+            </div>
+        )
     }
 
     createNavbar() {

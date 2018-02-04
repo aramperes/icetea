@@ -32,7 +32,7 @@ export default class AuthRouter extends Router {
                 // login using form
                 if (errMessage) {
                     // login failed
-                    let render = IndexRouter.renderWithContainer(req, "Login",
+                    let render = IndexRouter.renderWithContainer(req, "Login", undefined,
                         React.createElement(Login, {
                             gate_message: {
                                 type: "error",
@@ -53,7 +53,7 @@ export default class AuthRouter extends Router {
                 res.redirect('/');
             } else {
                 let render = IndexRouter.renderWithContainer(req, "Login",
-                    React.createElement(Login));
+                    undefined, React.createElement(Login));
                 res.send(render);
             }
         });

@@ -18,7 +18,7 @@ export default class IndexRouter extends Router {
         this.get('/', (req, res) => {
             let sendHome = function (userSchema: UserSchema) {
                 let render = IndexRouter.renderWithContainer(req, "Home",
-                    React.createElement(Home, {user: userSchema}));
+                    userSchema, React.createElement(Home, {user: userSchema}));
                 res.send(render);
             };
             if (req['_icetea'].isAuthenticated()) {
@@ -46,10 +46,11 @@ export default class IndexRouter extends Router {
         });
     }
 
-    static renderWithContainer(req: Request, title: string, child: any): string {
+    static renderWithContainer(req: Request, title: string, user: UserSchema, child: any): string {
         return renderToString(React.createElement(App, {
             content: React.createElement(IceTeaContainer, {
                 url: req.url,
+                user: user,
                 child: child
             }),
             title: title
