@@ -89,6 +89,11 @@ export class Router {
         return this;
     }
 
+    all(path: string, handler: RequestHandler): Router {
+        this._router.all(path, handler);
+        return this;
+    }
+
     _setRootPath(root_path: string) {
         this._root_path = root_path;
     }

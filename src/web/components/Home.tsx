@@ -11,7 +11,7 @@ export default class Home extends React.Component<HomeProps, {}> {
     render() {
         return (
             <div className={"BaseStyle-page-content"}>
-                <p>This is the home page</p>
+                <h2>Home</h2>
                 <p>
                     {this.getWelcomeMessage()}
                 </p>
@@ -23,15 +23,23 @@ export default class Home extends React.Component<HomeProps, {}> {
         if (this.props.user) {
             return (
                 <div>
-                    Welcome, {this.props.user.name}.
-                </div>
-            );
-        } else {
-            return (
-                <div>
-                    You are not logged in. <a href={"/auth/login"}>Login here.</a>
+                    <p>
+                        Welcome, {this.props.user.name}.
+                    </p>
+                    <p>
+                        This is your dashboard.
+                    </p>
+                    <p>
+                        You can logout <a href={"/auth/logout"}>here</a>.
+                    </p>
                 </div>
             );
         }
+        // not logged-in
+        return (
+            <div>
+                You are not logged in. <a href={"/auth/login"}>Login here.</a>
+            </div>
+        );
     }
 }

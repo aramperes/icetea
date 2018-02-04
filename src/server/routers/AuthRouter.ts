@@ -3,6 +3,8 @@ import AuthLogin from "./auth/AuthLogin";
 import IndexRouter from "./IndexRouter";
 import Login from "../../web/components/Login";
 import * as React from "react";
+import AuthMiddleware from "../middleware/AuthMiddleware";
+import {mongo} from "../../start";
 
 export default class AuthRouter extends Router {
 
@@ -48,12 +50,32 @@ export default class AuthRouter extends Router {
         this.get("/login", (req, res) => {
             if (req['_icetea'].isAuthenticated()) {
                 // already logged-in, redirect to home
-                res.redirect(req.url);
+                res.redirect('/');
             } else {
                 let render = IndexRouter.renderWithContainer(req, "Login",
                     React.createElement(Login));
                 res.send(render);
             }
+        });
+        this.all("/logout", (req, res) => {
+            let redirectUri = req.query['redirect'];
+            if (!redirectUri) {
+                redirectUri = "/"; // default
+            }
+            if (!req['_icetea'].isAuthenticated()) {
+                // not authenticated, go back home
+                res.redirect('/');
+                return;
+            }
+            // delete session from cookie
+            res.clearCookie(AuthMiddleware.COOKIE_SESSION_ID);
+            res.redirect(redirectUri);
+            // delete the session from the database
+            mongo.deleteOne(req['_icetea'].session, (err, result) => {
+                if (err) {
+                    throw err;
+                }
+            });
         });
 
         /* API base route */

@@ -32,6 +32,7 @@ export default class AuthMiddleware extends Middleware {
                 }
                 console.debug('found session, userID=' + session.userId.toHexString());
                 req._icetea['user_id'] = session.userId.toHexString();
+                req._icetea['session'] = session;
                 req._icetea['session_expired'] = false;
                 if (session.isExpired()) {
                     req._icetea['session_expired'] = true;
