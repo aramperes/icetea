@@ -41,7 +41,6 @@ body {
     background-color: white;
     box-shadow: 0 1px 3px #AAA;
     cursor: default;
-    white-space: nowrap;
 }
 
 .IceTeaContainer-navbar > a {
@@ -105,6 +104,20 @@ body {
     vertical-align: top;
     margin-top: 7px;
     margin-left: 15px;
+}
+
+.IceTeaContainer-navbar-item-search {
+    display: none;
+    float: right;
+}
+
+@media screen and (max-width: 800px) {
+    .IceTeaContainer-navbar-search-group {
+        display: none;
+    }
+    .IceTeaContainer-navbar-item-search {
+        display: inline-block;
+    }
 }
 
 .IceTeaContainer-navbar-search {

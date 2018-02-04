@@ -24,7 +24,7 @@ export default class IceTeaContainer extends React.Component<IceTeaContainerProp
                     </p>
                     <p>
                         <a href={"https://www.icetea.io"}>ice tea</a> is open-source software, licensed under the MIT.
-                        <br />
+                        <br/>
                         &copy; 2018 ice tea.
                     </p>
                 </div>
@@ -74,6 +74,12 @@ export default class IceTeaContainer extends React.Component<IceTeaContainerProp
                 </a>
             ));
         }
+        domNav.push(<a key={"nav-search"} href={"/search"} className={
+            "IceTeaContainer-navbar-item-search" + (this.props.url === '/search' ? "IceTeaContainer-navbar-item-active" : "")}>
+            <div className={"IceTeaContainer-navbar-item"}>
+                Search
+            </div>
+        </a>);
         return (
             <div className={"IceTeaContainer-navbar"}>
                 <a href="/">
