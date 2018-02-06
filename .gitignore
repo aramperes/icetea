@@ -7,3 +7,4 @@ dist/**
 *.tgz
 *-debug.log
 .idea/
+si/
